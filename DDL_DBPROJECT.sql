@@ -1,4 +1,4 @@
-CREATE USER dbproject WITH ENCRYPTED PASSWORD 'admin';
+--CREATE USER dbproject WITH ENCRYPTED PASSWORD 'admin';
 
 CREATE SCHEMA IF NOT EXISTS fires AUTHORIZATION dbproject;
 
@@ -59,6 +59,17 @@ CREATE TABLE fires.cause_type (
     CONSTRAINT cause_type_description_unique UNIQUE (description)
 );
 
+-- Creating table for cause
+CREATE TABLE fires.cause (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(256) NOT NULL,
+	cause_type_id INT,
+	cause_group_id INT,
+	FOREIGN KEY (cause_type_id) REFERENCES fires.cause_type(id),
+	FOREIGN KEY (cause_group_id) REFERENCES fires.cause_group(id),
+    CONSTRAINT cause_name_unique UNIQUE (name)
+);
+
 -- Creating table for AreaType
 CREATE TABLE fires.area_type (
     id SERIAL PRIMARY KEY,
@@ -69,8 +80,7 @@ CREATE TABLE fires.area_type (
 -- Creating table for District
 CREATE TABLE fires.district (
     id SERIAL PRIMARY KEY,
-    name VARCHAR(256) NOT NULL,
-    CONSTRAINT district_name_unique UNIQUE (name)
+    name VARCHAR(256) NOT NULL    
 );
 
 -- Creating table for Municipality
@@ -78,8 +88,7 @@ CREATE TABLE fires.municipality (
     id SERIAL PRIMARY KEY,
     name VARCHAR(256) NOT NULL,
     district_id INT NOT NULL,
-    FOREIGN KEY (district_id) REFERENCES fires.district(id),
-    CONSTRAINT municipality_name_unique UNIQUE (name)
+    FOREIGN KEY (district_id) REFERENCES fires.district(id)    
 );
 
 -- Creating table for Neighborhood
@@ -88,8 +97,14 @@ CREATE TABLE fires.neighborhood (
     name VARCHAR(256) NOT NULL,
     municipality_id INT NOT NULL,
     freguesia_INE INT,
-    FOREIGN KEY (municipality_id) REFERENCES fires.municipality(id),
-    CONSTRAINT neighborhood_name_unique UNIQUE (name)
+    FOREIGN KEY (municipality_id) REFERENCES fires.municipality(id)    
+);
+
+-- Creating table for RNMPF
+CREATE TABLE fires.RNMPF (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(256) NOT NULL,
+    CONSTRAINT RNMPF_name_unique UNIQUE (name)
 );
 
 -- Creating table for RNAP
@@ -101,7 +116,8 @@ CREATE TABLE fires.RNAP (
 
 -- Creating table for Fire
 CREATE TABLE fires.fire (
-    id_SGIF SERIAL PRIMARY KEY,
+	id SERIAL PRIMARY KEY,
+    id_SGIF VARCHAR NOT NULL,
     id_ANEPC INT NOT NULL,
     year_number INT NOT NULL,
     month_number INT NOT NULL,
@@ -118,11 +134,16 @@ CREATE TABLE fires.fire (
     x_etrs89 DECIMAL(25, 18),
     y_etrs89 DECIMAL(25, 18),
     alert_source_id INT NOT NULL,
-    cause_type_id INT NOT NULL,
+    cause_id INT NOT NULL,
     neighborhood_id INT,
+	rnmpf_id INT,
+	rnap_id INT,	
+    FOREIGN KEY (rnap_id) REFERENCES fires.rnap(id),
+    FOREIGN KEY (rnmpf_id) REFERENCES fires.rnmpf(id),
     FOREIGN KEY (alert_source_id) REFERENCES fires.alert_source(id),
-    FOREIGN KEY (cause_type_id) REFERENCES fires.cause_type(id),
-    FOREIGN KEY (neighborhood_id) REFERENCES fires.neighborhood(id)
+    FOREIGN KEY (cause_id) REFERENCES fires.cause(id),
+    FOREIGN KEY (neighborhood_id) REFERENCES fires.neighborhood(id),	
+	CONSTRAINT fire_id_SGIF_unique UNIQUE (id)
 );
 
 -- Creating table for BurnedArea
@@ -132,32 +153,33 @@ CREATE TABLE fires.burned_area (
     area_type_id INT NOT NULL,
     fire_id INT NOT NULL,
     FOREIGN KEY (area_type_id) REFERENCES fires.area_type(id),
-    FOREIGN KEY (fire_id) REFERENCES fires.Fire(id_SGIF)
+    FOREIGN KEY (fire_id) REFERENCES fires.Fire(id)
 );
 
 -- Creating table for FireRiskIndex
 CREATE TABLE fires.fire_risk_index (
-    id_SGIF INT,
-	id_canadian_fire_index INT,
+    fire_id INT,
+	canadian_fire_index_id INT,
 	index_value DECIMAL(25,18), 
-	PRIMARY KEY (id_SGIF , id_canadian_fire_index ),
-	FOREIGN KEY (id_canadian_fire_index) REFERENCES fires.canadian_fire_index(id)
+	PRIMARY KEY (fire_id , canadian_fire_index_id ),
+	FOREIGN KEY (canadian_fire_index_id) REFERENCES fires.canadian_fire_index(id),
+	FOREIGN KEY (fire_id) REFERENCES fires.fire(id)
 );
 
 -- Creating table for Vehicles used in the fire
 CREATE TABLE fires.fire_vehicle (
-    id_vehicle INT NOT NULL,
-	id_SGIF INT NOT NULL,
-	PRIMARY KEY (id_vehicle , id_SGIF ),
-  FOREIGN KEY (id_vehicle) REFERENCES fires.vehicle(id),
-	FOREIGN KEY (id_SGIF) REFERENCES fires.fire(id_SGIF)
+    vehicle_id INT NOT NULL,
+	fire_id INT NOT NULL,
+	PRIMARY KEY (vehicle_id , fire_id ),
+  	FOREIGN KEY (vehicle_id) REFERENCES fires.vehicle(id),
+	FOREIGN KEY (fire_id) REFERENCES fires.fire(id)
 );
 
 -- Creating table for Firefighters worked in the fire
 CREATE TABLE fires.fire_firefighter (
-    id_firefighter INT NOT NULL,
-	id_SGIF INT NOT NULL,
-	PRIMARY KEY (id_firefighter , id_SGIF ),
-  FOREIGN KEY (id_firefighter) REFERENCES fires.firefighter(id),
-	FOREIGN KEY (id_SGIF) REFERENCES fires.fire(id_SGIF)
+    firefighter_id INT NOT NULL,
+	fire_id INT NOT NULL,
+	PRIMARY KEY (firefighter_id , fire_id ),
+  	FOREIGN KEY (firefighter_id) REFERENCES fires.firefighter(id),
+	FOREIGN KEY (fire_id) REFERENCES fires.fire(id)
 );
