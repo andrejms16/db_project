@@ -1,6 +1,7 @@
 import re
 import unicodedata
 from datetime import datetime
+import configparser
 
 def print_menu(options, menu_title, menu_prompt):
     print('')
@@ -34,3 +35,18 @@ def text_standardize(text):
 def get_timestamp(date):
     dt = datetime.strptime(date, '%d/%m/%Y %H:%M')
     return dt.timestamp()
+
+
+def load_db_config(filename='database.ini', section='postgresql'):
+    parser = configparser.ConfigParser()
+    parser.read(filename)
+
+    db_config = {}
+    if parser.has_section(section):
+        params = parser.items(section)
+        for param in params:
+            db_config[param[0]] = param[1]
+    else:
+        raise Exception(f'Section {section} not found in the {filename} file')
+    return db_config
+

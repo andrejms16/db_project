@@ -6,13 +6,10 @@ from load_data import *
 from database import PostgresSQL
 # Define functions or variables
 def main_menu():
+
+    db_config = load_db_config()
     db_instance = PostgresSQL(
-        user='postgres',
-        password='Neo_900110',
-        host='localhost',
-        port='5432',
-        database='FCED',
-        schema='fires'
+        **db_config
     )
     db_instance.test_connection()
     option = None
