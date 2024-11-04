@@ -27,7 +27,7 @@ Key included deliverables:
 - **Manipulate data in the database**: The application allows to insert, update and delete data from the database.
 - **Load data from excel file**: It load the database with the data from wildfires.xlsx. The application deletes all the existing data before start loadign the file records.
 - **Run Queries**: You can run many pre defined queries im the database.
-- **Check Graphics**: You can see different graphics implemented.
+- **Graphics**: You can see different graphics implemented in Graphics Folder.
 
 ## Technologies Used
 
@@ -41,6 +41,7 @@ db_project/
 ├── wildfires/          # Python application to manage the database and make queries.
 │   └── main.py         # Starts the application with all possible actions described in the menu.
 │   └── wildfires.xlsx  # Fire dataset available to be loaded by the application.
+│   └── graphics/       # Different graphics with interesting insights obtained from the database.
 ├── uml.png             # UML Diagram
 ├── fires.sql           # DDL Script to create all database tables and constraints.
 ├── relational.doc      # Relational Model
