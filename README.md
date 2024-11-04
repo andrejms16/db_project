@@ -29,6 +29,19 @@ Key included deliverables:
 - **Run Queries**: You can run many pre defined queries im the database.
 - **Graphics**: You can see different graphics implemented in Graphics Folder.
 
+## Application Setup
+
+Before start using the application please set your the connection properties in `database.ini`
+
+```plaintext
+host= localhost
+port= 5432
+database= FCED
+user= postgres
+password= xxxxx
+schema = fires
+```
+
 ## Technologies Used
 
 - **SQL**: [PostgreSQL]
@@ -39,6 +52,7 @@ Key included deliverables:
 ```plaintext
 db_project/
 ├── wildfires/          # Python application to manage the database and make queries.
+│   └── database.ini    # Set here your database credentials to be used by application.
 │   └── main.py         # Starts the application with all possible actions described in the menu.
 │   └── wildfires.xlsx  # Fire dataset available to be loaded by the application.
 │   └── graphics/       # Different graphics with interesting insights obtained from the database.
