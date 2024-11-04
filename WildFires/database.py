@@ -166,7 +166,15 @@ class PostgresSQL:
     def close_connection(self):
         self.connection.close()
 
-
+    def delete(self, tabel_name):
+        try:
+            query = f"DELETE FROM {tabel_name} ;"
+            self.cursor.execute(query)
+            self.connection.commit()
+            return True
+        except Exception as e:
+            print('Error deleting data: ',e)
+            return False
 
 
 
