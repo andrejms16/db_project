@@ -1,6 +1,7 @@
 from menus import *
 from utils import *
 from queries import *
+from graphics import *
 from load_data import *
 from database import PostgresSQL
 # Define functions or variables
@@ -22,7 +23,8 @@ def main_menu():
         {'index': 3, 'text': 'Delete data'},
         {'index': 4, 'text': 'Search data'},
         {'index': 5, 'text': 'Load data from excel'},
-        {'index': 6, 'text': 'Queries'}
+        {'index': 6, 'text': 'Queries'},
+        {'index': 7, 'text': 'Graphics'},
     ]
 
     while option != 0:
@@ -39,6 +41,8 @@ def main_menu():
             load_wildfires(db_instance)
         elif option == 6:
             queries(db_instance)
+        elif option == 7:
+            graphics(db_instance)
     db_instance.close_connection()
     exit(0)
 
