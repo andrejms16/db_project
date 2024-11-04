@@ -1,5 +1,6 @@
 import re
 import unicodedata
+from datetime import datetime
 
 def print_menu(options, menu_title, menu_prompt):
     print('')
@@ -28,3 +29,8 @@ def text_standardize(text):
     text = re.sub(r'\s+', ' ', text.strip())
     text = re.sub(r'[-_.,;:!@#?(){}[\]*/\\]', '', text)
     return text
+
+
+def get_timestamp(date):
+    dt = datetime.strptime(date, '%d/%m/%Y %H:%M')
+    return dt.timestamp()

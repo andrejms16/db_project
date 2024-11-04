@@ -153,9 +153,9 @@ class PostgresSQL:
             print('Error querying data: ',e)
             return False
 
-    def delete_one(self, tabel_name, condition):
+    def delete_one(self, table_name, condition):
         try:
-            query = f"DELETE FROM {tabel_name} WHERE {condition[0]} = '{condition[1]}';"
+            query = f"DELETE FROM {table_name} WHERE {condition[0]} = '{condition[1]}';"
             self.cursor.execute(query)
             self.connection.commit()
             return True
@@ -166,14 +166,14 @@ class PostgresSQL:
     def close_connection(self):
         self.connection.close()
 
-    def delete(self, tabel_name):
+    def truncate(self, table_name):
         try:
-            query = f"DELETE FROM {tabel_name} ;"
+            query = f"TRUNCATE TABLE {table_name} CASCADE;"
             self.cursor.execute(query)
             self.connection.commit()
             return True
         except Exception as e:
-            print('Error deleting data: ',e)
+            print('Error truncating table: ',e)
             return False
 
 
