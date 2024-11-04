@@ -118,7 +118,7 @@ CREATE TABLE fires.RNAP (
 CREATE TABLE fires.fire (
 	id SERIAL PRIMARY KEY,
     id_SGIF VARCHAR NOT NULL,
-    id_ANEPC INT NOT NULL,
+    id_ANEPC BIGINT NOT NULL,
     year_number INT NOT NULL,
     month_number INT NOT NULL,
     day_number INT NOT NULL,
