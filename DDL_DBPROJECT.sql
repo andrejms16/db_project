@@ -134,7 +134,7 @@ CREATE TABLE fires.fire (
     x_etrs89 DECIMAL(25, 18),
     y_etrs89 DECIMAL(25, 18),
     alert_source_id INT NOT NULL,
-    cause_id INT NOT NULL,
+    cause_id INT,
     neighborhood_id INT,
 	rnmpf_id INT,
 	rnap_id INT,	
