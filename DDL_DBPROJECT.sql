@@ -55,7 +55,7 @@ CREATE TABLE fires.cause_type (
     id SERIAL PRIMARY KEY,
     description VARCHAR(256) NOT NULL,
     --cause_group_id INT NOT NULL,
-    FOREIGN KEY (cause_group_id) REFERENCES fires.cause_group(id),
+    --FOREIGN KEY (cause_group_id) REFERENCES fires.cause_group(id),
     CONSTRAINT cause_type_description_unique UNIQUE (description)
 );
 
