@@ -125,7 +125,7 @@ CREATE TABLE fires.fire (
     alert_time TIMESTAMP NOT NULL,
     first_intervention TIMESTAMP,
     extinction TIMESTAMP,
-    duration DECIMAL,
+    --duration DECIMAL,
     address VARCHAR(256),
     x_militar_position DECIMAL(25, 18),
     y_militar_position DECIMAL(25, 18),
