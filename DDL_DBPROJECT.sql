@@ -54,14 +54,14 @@ CREATE TABLE fires.cause_group (
 CREATE TABLE fires.cause_type (
     id SERIAL PRIMARY KEY,
     description VARCHAR(256) NOT NULL,
-    cause_group_id INT NOT NULL,
-    FOREIGN KEY (cause_group_id) REFERENCES fires.cause_group(id),
+    --cause_group_id INT NOT NULL,
+    --FOREIGN KEY (cause_group_id) REFERENCES fires.cause_group(id),
     CONSTRAINT cause_type_description_unique UNIQUE (description)
 );
 
 -- Creating table for cause
 CREATE TABLE fires.cause (
-    id SERIAL PRIMARY KEY,
+    codcausa INT PRIMARY KEY,
     name VARCHAR(256) NOT NULL,
 	cause_type_id INT,
 	cause_group_id INT,
@@ -118,14 +118,14 @@ CREATE TABLE fires.RNAP (
 CREATE TABLE fires.fire (
 	id SERIAL PRIMARY KEY,
     id_SGIF VARCHAR NOT NULL,
-    id_ANEPC INT NOT NULL,
+    id_ANEPC BIGINT NOT NULL,
     year_number INT NOT NULL,
     month_number INT NOT NULL,
     day_number INT NOT NULL,
     alert_time TIMESTAMP NOT NULL,
     first_intervention TIMESTAMP,
     extinction TIMESTAMP,
-    duration DECIMAL,
+    --duration DECIMAL,
     address VARCHAR(256),
     x_militar_position DECIMAL(25, 18),
     y_militar_position DECIMAL(25, 18),
@@ -134,14 +134,14 @@ CREATE TABLE fires.fire (
     x_etrs89 DECIMAL(25, 18),
     y_etrs89 DECIMAL(25, 18),
     alert_source_id INT NOT NULL,
-    cause_id INT NOT NULL,
+    cause_id INT,
     neighborhood_id INT,
 	rnmpf_id INT,
 	rnap_id INT,	
     FOREIGN KEY (rnap_id) REFERENCES fires.rnap(id),
     FOREIGN KEY (rnmpf_id) REFERENCES fires.rnmpf(id),
     FOREIGN KEY (alert_source_id) REFERENCES fires.alert_source(id),
-    FOREIGN KEY (cause_id) REFERENCES fires.cause(id),
+    FOREIGN KEY (cause_id) REFERENCES fires.cause(codcausa),
     FOREIGN KEY (neighborhood_id) REFERENCES fires.neighborhood(id),	
 	CONSTRAINT fire_id_SGIF_unique UNIQUE (id)
 );
